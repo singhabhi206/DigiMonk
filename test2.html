@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session Status & Video Call | Sikkim Monastery Tours</title>
+  <style>
+    /* Same styles as before, omitted here for brevity */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+      color: #2c3e50;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-align: center;
+      color: #00796b;
+    }
+
+    .status-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      padding: 25px 30px;
+      max-width: 480px;
+      width: 100%;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .status-label {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #004d40;
+    }
+
+    .status-message {
+      font-size: 1.1rem;
+      color: #00796b;
+      min-height: 40px;
+    }
+
+    .video-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    video {
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      background: black;
+      width: 320px;
+      height: 240px;
+      object-fit: cover;
+    }
+
+    .controls {
+      margin-top: 25px;
+      text-align: center;
+      width: 100%;
+    }
+
+    button {
+      background: #00796b;
+      color: white;
+      font-weight: 700;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 6px 12px rgba(0, 121, 107, 0.5);
+    }
+
+    button:hover:not(:disabled) {
+      background: #004d40;
+    }
+
+    button:disabled {
+      background: #a7a7a7;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    @media (max-width: 700px) {
+      video {
+        width: 90vw;
+        height: auto;
+      }
+      .video-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Session Status & Video Call</h1>
+
+  <div class="status-container" role="region" aria-live="polite" aria-atomic="true" aria-label="Session status">
+    <div class="status-label">Your Session Status:</div>
+    <div class="status-message" id="statusMessage">Waiting for confirmation...</div>
+  </div>
+
+  <div class="video-container" aria-label="Video call area">
+    <video id="localVideo" autoplay muted playsinline aria-label="Your video preview"></video>
+    <video id="remoteVideo" autoplay playsinline aria-label="Monk's video"></video>
+  </div>
+
+  <div class="controls">
+    <button id="connectBtn" aria-live="polite" aria-pressed="false">Connect to Monks</button>
+  </div>
+
+  <script>
+    (function() {
+      const statusMessage = document.getElementById('statusMessage');
+      const connectBtn = document.getElementById('connectBtn');
+      const localVideo = document.getElementById('localVideo');
+      const remoteVideo = document.getElementById('remoteVideo');
+
+      let localStream = null;
+      let peerConnection = null;
+      let ws = null;
+
+      // Replace with your signaling server URL
+      const SIGNALING_SERVER_URL = 'ws://localhost:8080';
+
+      // STUN servers for ICE candidates
+      const iceServers = {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' }
+        ]
+      };
+
+      // Simulate waiting status update (replace with real backend polling)
+      function simulateStatusUpdates() {
+        setTimeout(() => {
+          statusMessage.textContent = "Your session is confirmed! You can now connect with the monks.";
+          connectBtn.disabled = false;
+        }, 5000);
+      }
+
+      // Connect to signaling server
+      function connectWebSocket() {
+        ws = new WebSocket(SIGNALING_SERVER_URL);
+
+        ws.onopen = () => {
+          console.log('Connected to signaling server');
+        };
+
+        ws.onmessage = async (message) => {
+          const data = JSON.parse(message.data);
+          console.log('Received message:', data);
+
+          if (!peerConnection) {
+            await startLocalStream();
+            createPeerConnection();
+          }
+
+          if (data.sdp) {
+            if (data.sdp.type === 'offer') {
+              await peerConnection.setRemoteDescription(new RTCSessionDescription(data.sdp));
+              const answer = await peerConnection.createAnswer();
+              await peerConnection.setLocalDescription(answer);
+              sendMessage({ sdp: peerConnection.localDescription });
+            } else if (data.sdp.type === 'answer') {
+              await peerConnection.setRemoteDescription(new RTCSessionDescription(data.sdp));
+            }
+          } else if (data.candidate) {
+            try {
+              await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+            } catch (e) {
+              console.error('Error adding received ice candidate', e);
+            }
+          }
+        };
+
+        ws.onclose = () => {
+          console.log('Disconnected from signaling server');
+          statusMessage.textContent = "Disconnected from signaling server.";
+          connectBtn.disabled = true;
+        };
+
+        ws.onerror = (err) => {
+          console.error('WebSocket error:', err);
+          statusMessage.textContent = "Signaling server error.";
+          connectBtn.disabled = true;
+        };
+      }
+
+      // Send message to signaling server
+      function sendMessage(message) {
+        ws.send(JSON.stringify(message));
+      }
+
+      // Start local video and audio stream
+      async function startLocalStream() {
+        try {
+          localStream = await navigator.mediaDevices.getUser Media({ video: true, audio: true });
+          localVideo.srcObject = localStream;
+        } catch (err) {
+          alert('Could not access your camera and microphone. Please allow access.');
+          console.error(err);
+        }
+      }
+
+      // Create RTCPeerConnection and setup handlers
+      function createPeerConnection() {
+        peerConnection = new RTCPeerConnection(iceServers);
+
+        // Add local tracks
+        localStream.getTracks().forEach(track => {
+          peerConnection.addTrack(track, localStream);
+        });
+
+        // When remote stream arrives
+        peerConnection.ontrack = event => {
+          if (remoteVideo.srcObject !== event.streams[0]) {
+            remoteVideo.srcObject = event.streams[0];
+            console.log('Received remote stream');
+          }
+        };
+
+        // ICE candidates
+        peerConnection.onicecandidate = event => {
+          if (event.candidate) {
+            sendMessage({ candidate: event.candidate });
+          }
+        };
+
+        peerConnection.onconnectionstatechange = () => {
+          console.log('Connection state:', peerConnection.connectionState);
+          if (peerConnection.connectionState === 'connected') {
+            statusMessage.textContent = "You are connected with the monks.";
+          } else if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
+            statusMessage.textContent = "Connection lost. Please try reconnecting.";
+            connectBtn.disabled = false;
+            connectBtn.textContent = "Connect to Monks";
+          }
+        };
+      }
+
+      // Start call by creating offer
+      async function startCall() {
+        createPeerConnection();
+
+        try {
+          const offer = await peerConnection.createOffer();
+          await peerConnection.setLocalDescription(offer);
+          sendMessage({ sdp: peerConnection.localDescription });
+        } catch (err) {
+          console.error('Error creating offer:', err);
+        }
+      }
+
+      // Button click handler
+      connectBtn.addEventListener('click', async () => {
+        connectBtn.disabled = true;
+        connectBtn.textContent = 'Connecting...';
+
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+          connectWebSocket();
+          // Wait for websocket to open before continuing
+          ws.onopen = async () => {
+            await startLocalStream();
+            await startCall();
+            connectBtn.textContent = 'Connected';
+            connectBtn.setAttribute('aria-pressed', 'true');
+          };
+        } else {
+          if (!localStream) {
+            await startLocalStream();
+          }
+          await startCall();
+          connectBtn.textContent = 'Connected';
+          connectBtn.setAttribute('aria-pressed', 'true');
+        }
+      });
+
+      // Initialize page
+      connectBtn.disabled = true;
+      simulateStatusUpdates();
+    })();
+  </script>
+</body>
+</html>

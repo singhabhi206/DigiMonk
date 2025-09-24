@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Sermons</title>
+
+  <link rel="stylesheet" href="./styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #fdf6f0;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    .live-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      padding: 2rem;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .live-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .btn-join {
+      background-color: #f2b632;
+      border: none;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .btn-join:hover {
+      background-color: #d89e29;
+    }
+
+    .session-time {
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg"> <!--bg-body-territory-->
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">Monastery360</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+        <!-- <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="monasteries.html">Monasteries</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="./mentorsession.html">Monk-Session</a>
+        </li> -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            More
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Language</a></li>
+            <li><a class="dropdown-item" href="#">Bookings</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <!-- <div class="container py-5">
+    <!-- Page Header -->
+    <!-- <div class="text-center mb-5">
+      <h1 class="fw-bold">Live Sermons</h1>
+      <p class="text-muted">Join the monks in live spiritual discourses, meditation, and teachings.</p>
+    </div> -->
+
+    <!-- Session List -->
+    <!-- <div class="row g-4"> -->
+      
+      <!-- Session 1 -->
+      <!-- <div class="col-md-6">
+        <div class="live-card text-center">
+          <h3 class="mb-3">Morning Meditation</h3>
+          <p class="session-time">Sunday, 10:00 AM IST</p>
+          <p class="text-muted">Guided meditation session with chanting and mindfulness practices.</p>
+          <a href="https://zoom.us/j/1234567890" target="_blank" class="btn btn-join btn-lg">Join Live</a>
+        </div>
+      </div> -->
+
+      <!-- Session 2 -->
+      <!-- <div class="col-md-6">
+        <div class="live-card text-center">
+          <h3 class="mb-3">Evening Sermon</h3>
+          <p class="session-time">Wednesday, 6:00 PM IST</p>
+          <p class="text-muted">Teachings on compassion, wisdom, and the path of mindfulness.</p>
+          <a href="https://youtube.com/live/abcdefgh" target="_blank" class="btn btn-join btn-lg">Join Live</a>
+        </div>
+      </div> -->
+
+      <!-- Session 3 -->
+      <!-- <div class="col-md-6">
+        <div class="live-card text-center">
+          <h3 class="mb-3">Special Festival Sermon</h3>
+          <p class="session-time">October 10, 4:00 PM IST</p>
+          <p class="text-muted">A special sermon during the annual Buddhist festival with rituals and prayers.</p>
+          <a href="https://meet.google.com/xyz-1234" target="_blank" class="btn btn-join btn-lg">Join Live</a>
+        </div>
+      </div>
+
+    </div>
+  </div> -->
+
+  <div class="container my-5 text-center">
+  <h2 class="mb-3">Live Sermon</h2>
+  <div class="ratio ratio-16x9 shadow-lg rounded">
+    <iframe 
+      src="https://www.youtube.com/embed/live_stream?channel=UC1WREaxq8LRhdOOmzSFg2pA" 
+      title="YouTube Live Sermon" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  </div>
+  <p class="text-muted mt-3">Join the live stream directly here without leaving the site.</p>
+</div>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

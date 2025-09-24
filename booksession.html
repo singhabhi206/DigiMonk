@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One-to-One Interaction | Sikkim Monastery Tours</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: #f0f4f8;
+  }
+
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    text-align: center;
+  }
+
+  .monk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    justify-items: center;
+  }
+
+  .monk-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    width: 180px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+  }
+
+  .monk-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  }
+
+  .monk-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .monk-card .monk-name {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    background: #2980b9;
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Monastery360</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="monasteries.html">Monasteries</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./mentorsession.html">Monk-Session</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            More
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Language</a></li>
+            <li><a class="dropdown-item" href="#">Bookings</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+  <h1>Available Monks for One-to-One Interaction</h1>
+  <div class="monk-grid">
+    <div class="monk-card" onclick="window.location.href='call.html?monk=Ashoka'">
+      <img src="./Images/monk.jpeg" alt="Ashoka">
+      <div class="monk-name">Ashoka</div>
+    </div>
+    <div class="monk-card" onclick="window.location.href='call.html?monk=Buddha'">
+      <img src="./Images/monk.jpeg" alt="Buddha">
+      <div class="monk-name">Buddha</div>
+    </div>
+    <div class="monk-card" onclick="window.location.href='call.html?monk=Dalai'">
+      <img src="./Images/monk.jpeg" alt="Dalai">
+      <div class="monk-name">Dalai</div>
+    </div>
+    <div class="monk-card" onclick="window.location.href='call.html?monk=Hehe'">
+      <img src="./Images/monk.jpeg" alt="Hehe">
+      <div class="monk-name">Hehe</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

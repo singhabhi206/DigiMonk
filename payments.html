@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donate to Sikkim Monastery</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+.donation-container {
+  background: linear-gradient(135deg, #f44336, #ffeb3b);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+}
+h1 { margin-bottom: 10px; font-size: 1.8em; }
+p { margin-bottom: 20px; font-size: 1em; }
+label { display: block; margin-top: 15px; text-align: left; font-weight: 500; }
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border: none;
+  background-color: #e67e22;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover { background-color: #d35400; }
+#message { margin-top: 15px; font-weight: bold; word-break: break-word; }
+.payment-options { margin-top: 20px; text-align: left; }
+.payment-options label { display: block; margin-top: 10px; cursor: pointer; }
+.qr-code { margin-top: 15px; text-align: center; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="donation-container">
+  <h1>Support Our Monastery</h1>
+  <p>Your contribution helps preserve the heritage and support monks.</p>
+
+  <form id="donation-form">
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" placeholder="Enter your name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" placeholder="example@email.com" required>
+
+    <label for="amount">Donation Amount (₹):</label>
+    <input type="number" id="amount" placeholder="amount" min="1" required>
+
+    <div class="payment-options">
+      <label><input type="radio" name="payment" value="card" checked> Debit/Credit Card</label>
+      <label><input type="radio" name="payment" value="netbanking"> Net Banking</label>
+      <label><input type="radio" name="payment" value="qr"> QR Code</label>
+    </div>
+
+    <div id="card-fields">
+      <label for="card-number">Card Number:</label>
+      <input type="text" id="card-number" placeholder="xxxx-xxxx-xxxx-xxxx" maxlength="16">
+
+      <label for="expiry">Expiry Date:</label>
+      <input type="text" id="expiry" placeholder="MM/YY" maxlength="5">
+
+      <label for="cvv">CVV:</label>
+      <input type="text" id="cvv" placeholder="123" maxlength="3">
+    </div>
+
+    <div id="netbanking-fields" class="hidden">
+      <label for="bank">Select Bank:</label>
+      <select id="bank">
+        <option value="sbi">State Bank of India</option>
+        <option value="hdfc">HDFC Bank</option>
+        <option value="icici">ICICI Bank</option>
+        <option value="axis">Axis Bank</option>
+        <option value="other">Other Bank</option>
+      </select>
+    </div>
+
+    <div id="qr-fields" class="qr-code hidden">
+      <p>Scan this QR code to pay:</p>
+      <div id="qrcode"></div>
+    </div>
+
+    <button type="submit">Donate Now</button>
+  </form>
+
+  <div id="message"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const form = document.getElementById('donation-form');
+const messageDiv = document.getElementById('message');
+const paymentRadios = document.getElementsByName('payment');
+const cardFields = document.getElementById('card-fields');
+const netbankingFields = document.getElementById('netbanking-fields');
+const qrFields = document.getElementById('qr-fields');
+const qrcodeDiv = document.getElementById('qrcode');
+
+// Function to generate QR code using your UPI ID
+function generateQRCode(amount, name) {
+  qrcodeDiv.innerHTML = '';
+  const qrText = `upi://pay?pa=mauryaaryan794-1@oksbi&pn=SikkimMonastery&am=${amount}&cu=INR&tn=Donation by ${name}`;
+  new QRCode(qrcodeDiv, {
+    text: qrText,
+    width: 180,
+    height: 180,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
+
+// Show/hide payment fields and generate QR immediately if selected
+paymentRadios.forEach(radio => {
+  radio.addEventListener('change', () => {
+    cardFields.classList.add('hidden');
+    netbankingFields.classList.add('hidden');
+    qrFields.classList.add('hidden');
+
+    if(radio.value === 'card') cardFields.classList.remove('hidden');
+    if(radio.value === 'netbanking') netbankingFields.classList.remove('hidden');
+    if(radio.value === 'qr') {
+      qrFields.classList.remove('hidden');
+      const amount = document.getElementById('amount').value || 1;
+      const name = document.getElementById('name').value || 'Donor';
+      generateQRCode(amount, name);
+    }
+  });
+});
+
+// Update QR dynamically if amount or name changes
+document.getElementById('amount').addEventListener('input', () => {
+  if(document.querySelector('input[name="payment"]:checked').value === 'qr') {
+    generateQRCode(document.getElementById('amount').value || 1, document.getElementById('name').value || 'Donor');
+  }
+});
+document.getElementById('name').addEventListener('input', () => {
+  if(document.querySelector('input[name="payment"]:checked').value === 'qr') {
+    generateQRCode(document.getElementById('amount').value || 1, document.getElementById('name').value || 'Donor');
+  }
+});
+
+// Handle form submission
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const amount = document.getElementById('amount').value;
+  const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+
+  if(!name || !email || !amount){
+    messageDiv.textContent = "Please fill all fields.";
+    messageDiv.style.color = "red";
+    return;
+  }
+
+  let paymentInfo = '';
+  if(selectedPayment === 'card'){
+    paymentInfo = ` using Card ending ${document.getElementById('card-number').value.slice(-4)}`;
+  } else if(selectedPayment === 'netbanking'){
+    paymentInfo = ` via ${document.getElementById('bank').selectedOptions[0].text}`;
+  } else if(selectedPayment === 'qr'){
+    paymentInfo = ` using QR payment`;
+    qrFields.classList.remove('hidden');
+    generateQRCode(amount, name);
+  }
+
+  messageDiv.textContent = `Thank you, ${name}, for donating ₹${amount}${paymentInfo}!`;
+  messageDiv.style.color = "green";
+
+  // Reset form except QR code visibility
+  form.reset();
+  cardFields.classList.remove('hidden');
+  netbankingFields.classList.add('hidden');
+});
+</script>
+</body>
+</html>
