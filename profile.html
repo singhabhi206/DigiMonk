@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>User Profile - Sacred Sikkim</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fce8e6, #f9d6d5);
+    color: #ffe0b2;
+  }
+
+  .profile-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #f7d668; /* translucent white with red tint */
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(210, 106, 106, 0.3);
+    overflow: hidden;
+    backdrop-filter: saturate(180%) blur(10px);
+  }
+
+  .profile-header {
+    background: linear-gradient(135deg, #ffeb3b 0%, #ff5722 100%);
+    color: white;
+    padding: 40px 30px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .profile-photo {
+    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #f9d6d5;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(210, 106, 106, 0.6);
+  }
+
+  .profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .profile-info {
+    flex-grow: 1;
+  }
+
+  .profile-info h1 {
+    margin: 0 0 8px;
+    font-weight: 600;
+    font-size: 28px;
+    text-shadow: 1px 1px 3px rgba(150, 50, 50, 0.5);
+  }
+
+  .profile-info p {
+    margin: 0;
+    font-weight: 300;
+    font-size: 16px;
+    opacity: 0.9;
+  }
+
+  .profile-stats {
+    display: flex;
+    justify-content: space-around;
+    background: #ffe0b2;
+    padding: 30px 0;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat h3 {
+    margin: 0;
+    font-size: 28px;
+    color: #d46a6a;
+  }
+
+  .stat p {
+    margin: 6px 0 0;
+    font-weight: 500;
+    color: #7a3a3a;
+  }
+
+  .section {
+    padding: 40px 30px;
+  }
+
+  .section h2 {
+    margin-bottom: 25px;
+    color: #d46a6a;
+    font-weight: 600;
+    font-size: 24px;
+    border-bottom: 3px solid #f28b82;
+    display: inline-block;
+    padding-bottom: 6px;
+    text-shadow: 1px 1px 2px #f9d6d5;
+  }
+
+  .favorite-monasteries,
+  .recent-trips {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap: 20px;
+  }
+
+  .monastery-card,
+  .trip-card {
+    background: #fff5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(210, 106, 106, 0.15);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+
+  .monastery-card:hover,
+  .trip-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(210, 106, 106, 0.3);
+  }
+
+  .card-image {
+    width: 100%;
+    height: 140px;
+    overflow: hidden;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .monastery-card:hover .card-image img,
+  .trip-card:hover .card-image img {
+    transform: scale(1.1);
+  }
+
+  .card-content {
+    padding: 15px 20px;
+  }
+
+  .card-content h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #a83a3a;
+  }
+
+  .card-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #7a3a3a;
+    line-height: 1.4;
+  }
+
+  .contact-info {
+    font-size: 15px;
+    color: #7a3a3a;
+  }
+
+  .contact-info p {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .contact-info i {
+    color: #d46a6a;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* Orders Section */
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  .orders-table thead {
+    background: #d46a6a;
+    color: white;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 12px 15px;
+    border: 1px solid #f28b82;
+    text-align: left;
+  }
+
+  .orders-table tbody tr:hover {
+    background: #f9d6d5;
+  }
+
+  .status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+    font-size: 13px;
+  }
+
+  .status.pending {
+    background-color: #f4a261;
+  }
+
+  .status.completed {
+    background-color: #81b29a;
+  }
+
+  .status.cancelled {
+    background-color: #e76f51;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .profile-header {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .profile-stats {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .favorite-monasteries,
+    .recent-trips {
+      grid-template-columns: 1fr;
+    }
+
+    .orders-table thead {
+      display: none;
+    }
+
+    .orders-table, 
+    .orders-table tbody, 
+    .orders-table tr, 
+    .orders-table td {
+      display: block;
+      width: 100%;
+    }
+
+    .orders-table tr {
+      margin-bottom: 15px;
+      border-bottom: 2px solid #f28b82;
+    }
+
+    .orders-table td {
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+      border: none;
+      border-bottom: 1px solid #f9d6d5;
+    }
+
+    .orders-table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 15px;
+      width: 45%;
+      padding-left: 15px;
+      font-weight: 600;
+      text-align: left;
+      color: #a83a3a;
+    }
+  }
+
+  /* Accessibility helper */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="profile-container" role="main" aria-label="User   Profile">
+  <header class="profile-header">
+    <div class="profile-photo" aria-label="User   profile photo">
+      <img src="./Images/dummy.jpeg" alt="Profile photo of Tenzing Lama" />
+    </div>
+    <div class="profile-info">
+      <h1>@User_Name</h1>
+      <p>Spiritual traveler & monastery enthusiast from Sikkim</p>
+    </div>
+  </header>
+
+  <section class="profile-stats" aria-label="User   travel statistics">
+    <div class="stat">
+      <h3>12</h3>
+      <p>Monasteries Visited</p>
+    </div>
+    <div class="stat">
+      <h3>5</h3>
+      <p>Trips Completed</p>
+    </div>
+    <div class="stat">
+      <h3>3,200 km</h3>
+      <p>Travel Distance</p>
+    </div>
+  </section>
+
+  <section class="section favorite-monasteries" aria-labelledby="fav-monasteries-title">
+    <h2 id="fav-monasteries-title">Favorite Monasteries</h2>
+    <article class="monastery-card" tabindex="0">
+      <div class="card-image">
+        <img src="./Images/rumtek.jpg" alt="Rumtek Monastery" />
+      </div>
+      <div class="card-content">
+        <h3>Rumtek Monastery</h3>
+        <p>Known as the Dharma Chakra Centre, a spiritual hub of Tibetan Buddhism.</p>
+      </div>
+    </article>
+
+    <article class="monastery-card" tabindex="0">
+      <div class="card-image">
+        <img src="Images/pemayangtse.jpeg" alt="Pemayangtse Monastery" />
+      </div>
+      <div class="card-content">
+        <h3>Pemayangtse Monastery</h3>
+        <p>One of the oldest and most important monasteries in Sikkim.</p>
+      </div>
+    </article>
+
+    <article class="monastery-card" tabindex="0">
+      <div class="card-image">
+        <img src="./Images/tashiding.jpg" alt="Tashiding Monastery" />
+      </div>
+      <div class="card-content">
+        <h3>Tashiding Monastery</h3>
+        <p>Perched on a hilltop, known for its sacred rituals and festivals.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="section recent-trips" aria-labelledby="recent-trips-title">
+    <h2 id="recent-trips-title">Recent Trips</h2>
+    <article class="trip-card" tabindex="0">
+      <div class="card-image">
+        <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=400&q=80" alt="Gangtok city view" />
+      </div>
+      <div class="card-content">
+        <h3>Gangtok Exploration</h3>
+        <p>Visited local markets, monasteries, and scenic viewpoints in the capital city.</p>
+      </div>
+    </article>
+
+    <article class="trip-card" tabindex="0">
+      <div class="card-image">
+        <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80" alt="Hiking trail in Sikkim" />
+      </div>
+      <div class="card-content">
+        <h3>Hiking to Dzongri</h3>
+        <p>Challenging trek with breathtaking views of the Himalayas and monasteries.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- Orders Section -->
+  <section class="section orders" aria-labelledby="orders-title">
+    <h2 id="orders-title">My Orders</h2>
+    <table class="orders-table" role="table" aria-describedby="orders-description">
+      <caption id="orders-description" class="sr-only">List of recent orders placed by the user</caption>
+      <thead>
+        <tr>
+          <th scope="col">Order ID</th>
+          <th scope="col">Date</th>
+          <th scope="col">Items</th>
+          <th scope="col">Status</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Order ID">#1001</td>
+          <td data-label="Date">2024-05-10</td>
+          <td data-label="Items">Prayer Flags (5), Incense Sticks (2)</td>
+          <td data-label="Status"><span class="status completed">Completed</span></td>
+          <td data-label="Total">₹1,200</td>
+        </tr>
+        <tr>
+          <td data-label="Order ID">#1002</td>
+          <td data-label="Date">2024-05-15</td>
+          <td data-label="Items">Buddha Statue (1)</td>
+          <td data-label="Status"><span class="status pending">Pending</span></td>
+          <td data-label="Total">₹3,500</td>
+        </tr>
+        <tr>
+          <td data-label="Order ID">#1003</td>
+          <td data-label="Date">2024-05-20</td>
+          <td data-label="Items">Monastery Guidebook (1), Postcards (10)</td>
+          <td data-label="Status"><span class="status cancelled">Cancelled</span></td>
+          <td data-label="Total">₹800</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section contact-info" aria-labelledby="contact-info-title">
+    <h2 id="contact-info-title">Contact Information</h2>
+    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:tenzing.lama@example.com" style="color:#7a3a3a;">user@gmail.com</a></p>
+    <p><i class="fas fa-phone" aria-hidden="true"></i> +91 98******10</p>
+    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Gangtok, Sikkim, India</p>
+  </section>
+</div>
+
+<!-- FontAwesome CDN for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

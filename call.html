@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video Call | Sikkim Monastery Tours</title>
+<style>
+  html, body { margin: 0; height: 100%; font-family: 'Roboto', sans-serif; }
+  #jitsiContainer { width: 100%; height: 90%; }
+  .share-link {
+    text-align: center;
+    padding: 10px;
+    background: #2980b9;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    user-select: none;
+  }
+  .share-link:hover { background: #1c5980; }
+</style>
+</head>
+<body>
+
+<div id="jitsiContainer"></div>
+<div class="share-link" id="shareLinkBtn">
+  Click to Copy Link & Share with Your Friend
+</div>
+
+<script src='https://meet.jit.si/external_api.js'></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const monk = params.get('monk') || 'Ashoka';
+
+  const roomName = "HackDemoRoom"; // fixed room
+  const roomLink = `https://meet.jit.si/${roomName}`; // link to share
+
+  // Initialize Jitsi iframe
+  const domain = "meet.jit.si";
+  const options = {
+      roomName: roomName,
+      parentNode: document.querySelector('#jitsiContainer'),
+      width: '100%',
+      height: '100%',
+      userInfo: { displayName: monk }
+  };
+  const api = new JitsiMeetExternalAPI(domain, options);
+
+  // Share link button
+  const shareBtn = document.getElementById('shareLinkBtn');
+  shareBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(roomLink).then(() => {
+      shareBtn.textContent = "Link Copied! Share it with your friend.";
+      setTimeout(() => shareBtn.textContent = "Click to Copy Link & Share with Your Friend", 3000);
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Dham</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Pannellum CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css"/>
+  
+  
+  <link rel="stylesheet" href="./styles.css">
+  
+  <style>
+    .section h3 {
+            font-size: 1.4em;
+            color: #8b4513;
+            margin-bottom: 15px;
+        }
+
+        .section p {
+            font-size: 1em;
+            line-height: 1.7;
+            color: #555;
+            text-align: justify;
+        }
+
+        .highlights-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .highlights-list li {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            background-color: #fff;
+            border-radius: 4px;
+            border-left: 3px solid #d35400;
+        }
+
+        .highlights-list li::before {
+            content: '•';
+            color: #d35400;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .main-title {
+                font-size: 1.8em;
+            }
+        }
+  .details-section {
+    background-color: #fdf6f0; /* soft cream background */
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
+
+  .details-section h3 {
+    color: #5b3a29; /* earthy brown for headings */
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-left: 4px solid #f2b632; /* subtle highlight */
+    padding-left: 0.5rem;
+  }
+
+  .details-section p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #3e3e3e;
+  }
+
+  .details-section ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: #3e3e3e;
+  }
+
+  .details-section ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Optional: smooth fade-in effect when scrolling */
+  .details-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-in-out;
+  }
+
+  .details-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+    
+    #carouselExampleIndicators img {
+      height: 450px;
+      object-fit: cover;
+    }
+    #panorama {
+      height: 450px;
+      border: 2px solid #f4c542;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="./index.html">Monastery360</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="./index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="./monasteries.html">Monasteries</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" href="#">Culture</a></li> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Language</a></li>
+              <li><a class="dropdown-item" href="#">Bookings</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+    <h1 class="mb-0">Rumtek Monastery</h1>
+    <h5 class="text-muted fst-italic mb-0">“Preserving Buddha’s teachings with compassion”</h5>
+  </div>
+</div>
+
+  </header>
+
+  <!-- Hero Section: Carousel + 360 Viewer -->
+  <div class="container-fluid py-1">
+    <div class="row align-items-center g-4">
+
+      <!-- Left Column: Carousel -->
+      <div class="col-lg-6">
+        <div id="carouselExampleIndicators" class="carousel slide">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="./Images/rumtek.jpg" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+              <img src="./Images/rumtek1.jpeg" class="d-block w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+              <img src="./Images/rumtek2.jpeg" class="d-block w-100" alt="Slide 3">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: 360° Viewer -->
+      <div class="col-lg-6">
+        <div id="panorama"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <section id="location-events" class="py-1">
+  <div class="container-fluid">
+    <div class="row g-4 align-items-center">
+
+      <!-- Left Column: Map -->
+      <div class="col-lg-6 text-center px-2.5">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3498.123456789!2d88.6170!3d27.3314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e0abc123456789%3A0x123456789abcdef!2sRumtek%20Monastery!5e0!3m2!1sen!2sin!4v1694800000000!5m2!1sen!2sin"
+          width="100%" height="225" style="border:0; border-radius:6px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <!-- Right Column: Upcoming Events -->
+      <div class="col-lg-6 px-2.5">
+        <div class="h-100 hide-scrollbar" style="background-color:#FFD700; border-radius:6px; padding:20px; overflow-y:auto; max-height:225px;">
+          <h2 class="mb-2">Upcoming Events</h2>
+          <!-- <p class="mb-4">Check out the important events happening at Rumtek Monastery so you can plan your visit accordingly.</p> -->
+          <div class="card shadow-sm" style="background-color:#FFF8DC;">
+            <div class="card-body">
+              <h5 class="card-title">Lhabab Duchen</h5>
+              <p class="card-text">This festival is held in October or November and celebrates Buddha's descent from the heavens. The monastery is often decorated with lamps and holds special prayers.</p>
+              <p class="card-text"><small class="text-dark">Date: Oct-Nov</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+    
+    <div class="container">
+        <!-- <div class="header">
+            <h1 class="main-title">Rumtek Monastery</h1>
+            <p class="subtitle">Dharmachakra Centre</p>
+        </div> -->
+
+        <!-- Description -->
+        <div class="section">
+            <h3>Description</h3>
+            <p>Rumtek Monastery, also known as the Dharmachakra Centre, is one of the largest and most important monasteries in Sikkim. It serves as the seat of the 16th Karmapa, the head of the Karma Kagyu lineage of Tibetan Buddhism. The monastery is renowned for its stunning architecture, vibrant prayer halls, and colorful rituals.</p>
+        </div>
+
+        <!-- History -->
+        <div class="section">
+            <h3>History</h3>
+            <p>Originally built in the 16th century and rebuilt in the 1960s after the Chinese invasion of Tibet, Rumtek Monastery became the main center for the Karma Kagyu lineage outside Tibet. It has been a hub for Buddhist teachings, cultural preservation, and international Buddhist visitors.</p>
+        </div>
+
+        <!-- Key Highlights -->
+        <div class="section">
+            <h3>Key Highlights</h3>
+            <ul class="highlights-list">
+                <li>Located near Gangtok, surrounded by serene hills.</li>
+                <li>Houses sacred relics, thangkas, and statues.</li>
+                <li>Vibrant festivals like the annual Kagyed Cham dance.</li>
+                <li>Offers meditation retreats and teachings to monks and visitors.</li>
+                <li>Opened to the public in 1966.</li>
+            </ul>
+        </div>
+
+        <!-- Visit Info -->
+        <div class="section">
+            <h3>Visiting Information</h3>
+            <p>Open daily for visitors. Photography may be restricted inside prayer halls. Ideal time to visit is between October and March for festivals and pleasant weather.</p>
+        </div>
+    </div>
+</body>
+</html>
+</section>
+
+
+
+
+
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Pannellum JS -->
+  <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
+  
+  <!-- Initialize Pannellum -->
+  <script>
+    pannellum.viewer('panorama', {
+      "type": "equirectangular",
+      "panorama": "./Images/mona2.png",
+      "autoLoad": true,
+      "compass": true,
+      "autoRotate": 0,
+      "showControls": true
+    });
+  </script>
+</body>
+</html>
